@@ -1,6 +1,5 @@
 import numpy as np
 import GraphKernelFunc as gkf
-from sklearn.model_selection import KFold
 
 class Pegasos():
     def __init__(self, graphs, classes, iter, lamda):
