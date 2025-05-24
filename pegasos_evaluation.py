@@ -7,6 +7,10 @@ class Pegasos():
         self.classes = classes
         self.iter = iter
         self.lamda = lamda
+        # print(self.graphs)
+        # print(self.classes)
+        # print(self.iter)
+        # print(self.lamda)
 
     def train(self):
         # learning
@@ -21,7 +25,9 @@ class Pegasos():
             sigma_loss = 0
 
             for j in range(len(self.graphs)):
-                sigma_loss += alpha[j] * self.classes[i_t] * gkf.GraghkernelFunc.k_func_wl(self.graphs[i_t], self.graphs[j], 1)
+                sigma_loss += alpha[j] * self.classes[j] * gkf.GraghkernelFunc.k_func_wl(self.graphs[i_t], self.graphs[j], 1)
+            
+            # print(self.classes[i_t] / (self.lamda * t) * sigma_loss)
 
             if(self.classes[i_t] / (self.lamda * t) * sigma_loss < 1):
                 alpha[i_t] += 1
@@ -31,21 +37,27 @@ class Pegasos():
     def predict(self, index, alpha):
         # predict
         predict = []
+        truevalue = []
         for i in index:
             print("index = ",i)
             y = 0
             for j in range(len(self.graphs)):
                 y +=  alpha[j] * self.classes[j] * gkf.GraghkernelFunc.k_func_wl(self.graphs[i], self.graphs[j], 1)
-            predict.append(y)
+            predict.append(np.sign(y)[0])
+            truevalue.append(self.classes[i])
+            # print("p = ", np.sign(y)[0], "t = ", self.classes[i])
 
-        return predict
+        return np.array(predict), np.array(truevalue)
 
     def accuracy(self, alpha):
         # accuracy
         picked = np.random.choice(len(self.classes), size=300, replace=False)
-        predict = self.predict(picked, alpha)
+        predict, truevalue = self.predict(picked, alpha)
         
-        return np.sum(predict==self.classes[picked])/len(picked)
+        # print(type(predict), predict)
+        # print(type(truevalue), truevalue)
+
+        return (predict == truevalue).mean()
             
    
 

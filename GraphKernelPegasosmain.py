@@ -20,5 +20,5 @@ alpha = Pegasos.train()
 
 acc = Pegasos.accuracy(alpha)
 
-print(acc)
+print("acc = ", acc)
 
