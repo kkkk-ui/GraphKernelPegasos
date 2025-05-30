@@ -149,7 +149,7 @@ class classification:
 
                     # サブグラフのノード数を取得(ノード数で制限)
                     num_nodes = subgraph.number_of_nodes()
-                    if num_nodes > 5000:
+                    if num_nodes > 10000:
                         print(f"Node {center_node} forms a too big subgraph, skipping.")
                         print(f"subgraph has {num_nodes} nodes")
                         continue
@@ -171,24 +171,6 @@ class classification:
                     self.graphs.append(graph)
                     print(f"Node {center_node} generated successfully")
                     print(f"subgraph has {num_nodes} nodes")
-
-                    """
-                    # サブグラフの隣接行列を取得
-                    try:
-                        adj_matrix_sub_dense = nx.to_numpy_array(subgraph,dtype=np.int8)
-                        print(f"Node {center_node} generated successfully")
-                    except np.core._exceptions._ArrayMemoryError:
-                        print(f"Node {center_node} forms an too big subgraph, skipping.")
-                        continue
-                    except MemoryError:
-                        print(f"Node {center_node} forms an too big subgraph, skipping.")
-                        continue
-
-                    # 孤立ノードの場合はスキップ
-                    if adj_matrix_sub_dense.shape[0] == 1:
-                        print(f"Node {center_node} forms an isolated subgraph, skipping.")
-                        continue
-                    """
 
                     # 孤立ノードでない場合、リストに追加
                     if idx < len(Xtr):  # 学習データの場合
