@@ -32,7 +32,7 @@ gm_n = kf.GraghkernelFunc.normalize_gram_matrix(gm)
 print("fit_transform()")
 print(gm_n)
 
-g = kf.GraghkernelFunc.k_func_wl(graph[0], graph[1], 3)
+g = kf.GraghkernelFunc.k_vec_wl(graph[0], graph, 3)
 
 print("transform()")
 print(g)

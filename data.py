@@ -144,20 +144,20 @@ class classification:
                         subgraph_nodes = nx.single_source_shortest_path_length(G, center_node, cutoff=k).keys()
                         subgraph = G.subgraph(subgraph_nodes)
                     except MemoryError:
-                        print(f"Node {center_node} forms an too big subgraph, skipping.")
+                        # print(f"Node {center_node} forms an too big subgraph, skipping.")
                         continue
 
                     # サブグラフのノード数を取得(ノード数で制限)
                     num_nodes = subgraph.number_of_nodes()
                     if num_nodes > 10000:
-                        print(f"Node {center_node} forms a too big subgraph, skipping.")
-                        print(f"subgraph has {num_nodes} nodes")
+                        # print(f"Node {center_node} forms a too big subgraph, skipping.")
+                        # print(f"subgraph has {num_nodes} nodes")
                         continue
 
                     # 孤立ノードの場合はスキップ
                     if num_nodes == 1:
-                        print(f"Node {center_node} forms an isolated subgraph, skipping.")
-                        print(f"subgraph has {num_nodes} nodes")
+                        # print(f"Node {center_node} forms an isolated subgraph, skipping.")
+                        # print(f"subgraph has {num_nodes} nodes")
                         continue
 
                     # ノードラベルを取得
@@ -169,8 +169,8 @@ class classification:
                     # grakel用Graphオブジェクトを作成（隣接行列を介さない）
                     graph = Graph(edge_list, node_labels=sublabel)
                     self.graphs.append(graph)
-                    print(f"Node {center_node} generated successfully")
-                    print(f"subgraph has {num_nodes} nodes")
+                    # print(f"Node {center_node} generated successfully")
+                    # print(f"subgraph has {num_nodes} nodes")
 
                     # 孤立ノードでない場合、リストに追加
                     if idx < len(Xtr):  # 学習データの場合

@@ -97,6 +97,16 @@ class GraghkernelFunc():
         return k_val
     #-----------------------------------------------------------------------------------------#
 
+    #-----------------------------------------------------------------------------------------#
+    # Weisfeiler-Lehman部分木カーネル graph -> vector
+    @staticmethod
+    def k_vec_wl(g1, g2, i):
+        gk = WeisfeilerLehman(n_iter=i, normalize=True)
+        gk.fit([g1])
+        k_val = (gk.transform(g2).T)[0]
+        return k_val
+    #-----------------------------------------------------------------------------------------#
+
 
 
     
