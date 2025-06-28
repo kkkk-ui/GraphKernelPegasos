@@ -14,7 +14,7 @@ myData.makeData(dataType=int(input("data type =>")))
 # Learning and evaluation.
 print("lamda,acc")
 for lamda in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10, 100]:
-    Pegasos = pg.Pegasos(myData.graphs, myData.classes, 100, lamda)
+    Pegasos = pg.Pegasos(myData.graphs, myData.classes, 500, lamda)
 
     start = time.time()
     alpha = Pegasos.train()
@@ -23,6 +23,7 @@ for lamda in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10, 100]:
     
     acc = Pegasos.accuracy(alpha)
     print(lamda,",",acc)
+    print("基底数", len(np.where(alpha > 0)[0]))
 
 # iter = int(input("iter = "))
 # lamda = float(input("lamda ="))

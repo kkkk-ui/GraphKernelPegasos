@@ -6,7 +6,6 @@ class Pegasos():
     def __init__(self, graphs, classes, iter, lamda):
         self.iter = iter
         self.lamda = lamda
-        self.delta_c = 0.9
         self.G_train, self.G_test, self.y_train, self.y_test = train_test_split(graphs, classes, test_size=0.1)
 
     def train(self):
@@ -14,7 +13,6 @@ class Pegasos():
 
         # initialize
         alpha = np.zeros(len(self.G_train))
-        kernel_cache = {}
 
         # iterate
         for t in range(1,self.iter+1):
@@ -22,36 +20,10 @@ class Pegasos():
             sigma_loss = 0
 
             support_indices = np.where(alpha > 0)[0]
-            for j in support_indices:
-                kernel_cache[j][0] = gkf.GraghkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2)
-            sigma_loss = sum(alpha[j] * self.y_train[j] * kernel_cache[j][0] for j in support_indices)
+            sigma_loss = sum(alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2) for j in support_indices)
             
             if(self.y_train[i_t] / (self.lamda * t) * sigma_loss < 1):
                 alpha[i_t] += 1
-                kernel_cache[i_t] = [1, t]
-
-                #optimize dictionary
-                if (t>100):
-                    # optimize dictionary
-                    coh_max = 0
-                    coh_index = 0
-                    for j in support_indices:
-                        if(j == i_t):
-                            continue
-
-                        if(t - kernel_cache[j][1] < 100):
-                            continue
-
-                        if(alpha[j] > 1):
-                            continue
-
-                        coh = kernel_cache[j][0]
-                        if(coh > coh_max):
-                            coh_max = coh
-                            coh_index = j    
-
-                    if(coh_max > self.delta_c):
-                        alpha[coh_index] = 0
     
         return alpha
     
@@ -63,7 +35,7 @@ class Pegasos():
             y = 0
             
             support_indices = np.where(alpha > 0)[0]
-            y = sum(alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2) for j in support_indices) #<class 'numpy.ndarray'>
+            y = sum(alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2) for j in support_indices)
 
             predict.append(np.sign(y)[0])
             truevalue.append(self.y_test[i])
@@ -73,9 +45,14 @@ class Pegasos():
     def accuracy(self, alpha):
         # accuracy
         predict, truevalue = self.predict(alpha)
+
+        support_indices = np.where(alpha > 0)[0]
+        print("基底数：", len(support_indices))
+
         return (predict == truevalue).mean()
             
    
+
 
 
 
