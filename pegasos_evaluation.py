@@ -14,7 +14,7 @@ class Pegasos():
 
         # initialize
         alpha = np.zeros(len(self.G_train))
-        kernel_cache = {}
+        kernel_cache = np.zeros((len(self.G_train), 2))
 
         # iterate
         for t in range(1,self.iter+1):
@@ -24,7 +24,11 @@ class Pegasos():
             support_indices = np.where(alpha > 0)[0]
             for j in support_indices:
                 kernel_cache[j][0] = gkf.GraghkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2)
-            sigma_loss = sum(alpha[j] * self.y_train[j] * kernel_cache[j][0] for j in support_indices)
+
+            alphas = alpha[support_indices]
+            ys = self.y_train[support_indices]
+            ks = kernel_cache[support_indices, 0]
+            sigma_loss = np.dot(alphas * ys, ks)
             
             if(self.y_train[i_t] / (self.lamda * t) * sigma_loss < 1):
                 alpha[i_t] += 1
