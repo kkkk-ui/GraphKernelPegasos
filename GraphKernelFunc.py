@@ -5,7 +5,7 @@ from grakel.kernels import EdgeHistogram
 from grakel.kernels import ShortestPath
 from grakel.kernels import GraphletSampling
 
-class GraghkernelFunc():
+class GraphkernelFunc():
     def __init__(self, kernelType, kernelParam=1):
         self.kernelType = kernelType
         self.kernelParam = kernelParam

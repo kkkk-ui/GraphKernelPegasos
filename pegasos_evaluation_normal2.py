@@ -20,7 +20,7 @@ class Pegasos():
             sigma_loss = 0
 
             support_indices = np.where(alpha > 0)[0]
-            sigma_loss = sum(alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2) for j in support_indices)
+            sigma_loss = sum(alpha[j] * self.y_train[j] * gkf.GraphkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2) for j in support_indices)
             
             if(self.y_train[i_t] / (self.lamda * t) * sigma_loss < 1):
                 alpha[i_t] += 1
@@ -35,7 +35,7 @@ class Pegasos():
             y = 0
             
             support_indices = np.where(alpha > 0)[0]
-            y = sum(alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2) for j in support_indices)
+            y = sum(alpha[j] * self.y_train[j] * gkf.GraphkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2) for j in support_indices)
 
             predict.append(np.sign(y)[0])
             truevalue.append(self.y_test[i])

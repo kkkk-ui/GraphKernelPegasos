@@ -22,7 +22,7 @@ class Pegasos():
             sigma_loss = 0
 
             for j in range(len(self.G_train)):
-                sigma_loss += alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2)
+                sigma_loss += alpha[j] * self.y_train[j] * gkf.GraphkernelFunc.k_func_wl(self.G_train[i_t], self.G_train[j], 2)
             
             if(self.y_train[i_t] / (self.lamda * t) * sigma_loss < 1):
                 alpha[i_t] += 1
@@ -37,7 +37,7 @@ class Pegasos():
         for i in range(len(self.G_test)):
             y = 0
             for j in range(len(self.G_train)):
-                y +=  alpha[j] * self.y_train[j] * gkf.GraghkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2)
+                y +=  alpha[j] * self.y_train[j] * gkf.GraphkernelFunc.k_func_wl(self.G_test[i], self.G_train[j], 2)
             predict.append(np.sign(y)[0])
             truevalue.append(self.y_test[i])
 
