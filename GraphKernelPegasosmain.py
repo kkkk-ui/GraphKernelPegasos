@@ -3,6 +3,8 @@ import numpy as np
 import pegasos_evaluation as pg
 import data
 import time
+import cProfile
+from pegasos_cython import train
 
 #-------------------
 # Make data
