@@ -17,7 +17,20 @@ for lamda in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10, 100]:
     Pegasos = pg.Pegasos(myData.graphs, myData.classes, 500, lamda)
 
     start = time.time()
-    alpha = Pegasos.train()
+    
+    # default
+    # cProfile.run("alpha = Pegasos.train()")
+    alpha = Pegasos.train() 
+    
+
+    #cython
+    #cProfile.run("train(np.array(Pegasos.G_train, dtype=object), Pegasos.y_train.astype(np.int32), Pegasos.iter,Pegasos.lamda, Pegasos.delta_c)")
+    # alpha = train(np.array(Pegasos.G_train, dtype=object),  
+    #               Pegasos.y_train.astype(np.int32),         
+    #               Pegasos.iter,
+    #               Pegasos.lamda,
+    #               Pegasos.delta_c)
+    
     end = time.time()
     print(f"処理時間: {end - start:.4f} 秒")
     
