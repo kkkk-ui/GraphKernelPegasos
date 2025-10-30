@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-import pegasos_evaluation as pg
+import pegasos_evaluation_proj as pg
 import data
 import time
 import cProfile
-from pegasos_cython import train
+# from pegasos_cython import train
 
 #-------------------
 # Make data
