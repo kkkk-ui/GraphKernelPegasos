@@ -18,6 +18,9 @@ class Pegasos():
     
         # iterate
         for t in range(1,self.iter+1):
+            eta_t = 1.0 / t 
+            # alpha = alpha * (1.0 - eta_t * self.lamda)
+
             i_t = np.random.randint(len(self.G_train))
             sigma_loss = 0
 
@@ -38,7 +41,7 @@ class Pegasos():
                     alpha[i_t] += 1
                     kernel_cache[i_t] = [1, t]
                 # optimize dictionary(Whether to add or not)
-                if (t>2):
+                if (t>=2):
                     coh_max = 0
                     for j in support_indices:
                         if(j == i_t):
@@ -49,7 +52,7 @@ class Pegasos():
                             coh_max = coh
 
                     if(coh_max < self.delta_c):
-                        alpha[i_t] += 1
+                        alpha[i_t] += eta_t / self.lamda
                         kernel_cache[i_t] = [1, t]
             # --------------------------------------------------------------------------------- #
             # projection
