@@ -14,6 +14,7 @@ time_prune = [11.5602, 17.9117, 21.5783, 50.2306, 136.4084, 147.7677, 172.1772, 
 acc_prune = [0.9887, 0.8979, 0.8639, 0.9187, 0.8034, 0.6049, 0.6427, 0.6314]
 base_prune = [16, 28, 34, 89, 254, 253, 275, 271]
 
+# cython-枝刈りなしの結果
 time_nc_prune = [15.7494, 12.2922, 14.0270, 33.4471, 73.4886, 87.7436, 98.4539, 87.0964]
 acc_nc_prune  = [0.9281663516068053, 0.9111531190926276, 0.9376181474480151, 0.9376181474480151,
                0.7901701323251418, 0.6351606805293005, 0.610586011342155, 0.6294896030245747]
@@ -25,13 +26,18 @@ time_c_prune = [4.6966, 10.6492, 12.3738, 33.1161, 74.1134, 98.5616, 91.7693, 10
 acc_c_prune = [0.9981, 0.9660, 0.7921, 0.9244, 0.7089, 0.6389, 0.6238, 0.6011]
 base_c_prune = [12, 25, 36, 81, 243, 287, 274, 270]
 
+time_proj = [7.2215, 7.9221, 6.8520, 33.0439, 74.4767, 81.1089, 74.1389, 87.1509]
+acc_proj = [0.9735, 0.9849, 0.9905, 0.8526, 0.7240, 0.7240, 0.7883, 0.7675]
+base_proj = [3, 4, 4, 68, 103, 116, 113, 123]
+
 fig, axs = plt.subplots(3, 1, figsize=(10, 12))
 
 # 1. 処理時間
 axs[0].plot(lambdas, time_no_prune, marker='o', label='No Pruning', linestyle='--')
-axs[0].plot(lambdas, time_prune, marker='s', label='Pruning')
-axs[0].plot(lambdas, time_c_prune, marker='s', label='cython Pruning', linestyle=':')
-axs[0].plot(lambdas, time_nc_prune, marker='o', label='not cython Pruning', linestyle='-')
+# axs[0].plot(lambdas, time_prune, marker='s', label='Pruning')
+# axs[0].plot(lambdas, time_c_prune, marker='s', label='cython Pruning', linestyle=':')
+axs[0].plot(lambdas, time_nc_prune, marker='o', label='Sparse Dictionary Growth Process', linestyle='-')
+axs[0].plot(lambdas, time_proj, marker='o', label='Sparse Dictionary Pruning', linestyle='-')
 axs[0].set_xscale("log")
 axs[0].set_ylabel("Time (sec)")
 axs[0].set_title("Training Time")
@@ -41,9 +47,10 @@ axs[0].grid(True)
 
 # 2. 精度
 axs[1].plot(lambdas, acc_no_prune, marker='o', label='No Pruning', linestyle='--')
-axs[1].plot(lambdas, acc_prune, marker='s', label='Pruning')
-axs[1].plot(lambdas, acc_c_prune, marker='s', label='cython Pruning', linestyle=':')
-axs[1].plot(lambdas, acc_nc_prune, marker='o', label='not cython Pruning', linestyle='-')
+# axs[1].plot(lambdas, acc_prune, marker='s', label='Pruning')
+# axs[1].plot(lambdas, acc_c_prune, marker='s', label='cython Pruning', linestyle=':')
+axs[1].plot(lambdas, acc_nc_prune, marker='o', label='Sparse Dictionary Growth Process', linestyle='-')
+axs[1].plot(lambdas, acc_proj, marker='o', label='Sparse Dictionary Pruning', linestyle='-')
 axs[1].set_xscale("log")
 axs[1].set_ylabel("Accuracy")
 axs[1].set_title("Accuracy")
@@ -53,9 +60,10 @@ axs[1].grid(True)
 
 # 3. 基底数
 axs[2].plot(lambdas, base_no_prune, marker='o', label='No Pruning', linestyle='--')
-axs[2].plot(lambdas, base_prune, marker='s', label='Pruning')
-axs[2].plot(lambdas, base_c_prune, marker='s', label='cython Pruning', linestyle=':')
-axs[2].plot(lambdas, base_nc_prune, marker='o', label='not cython Pruning', linestyle='-')
+# axs[2].plot(lambdas, base_prune, marker='s', label='Pruning')
+# axs[2].plot(lambdas, base_c_prune, marker='s', label='cython Pruning', linestyle=':')
+axs[2].plot(lambdas, base_nc_prune, marker='o', label='Sparse Dictionary Growth Process', linestyle='-')
+axs[2].plot(lambdas, base_proj, marker='o', label='Sparse Dictionary Pruning', linestyle='-')
 axs[2].set_xscale("log")
 axs[2].set_ylabel("Support Vectors")
 axs[2].set_xlabel("Lambda")

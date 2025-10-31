@@ -6,8 +6,8 @@ class Pegasos():
     def __init__(self, graphs, classes, iter, lamda):
         self.iter = iter
         self.lamda = lamda
-        self.delta_c = 0.9
-        self.relax = 0.1
+        self.delta_c = 0.8
+        self.relax = 0.5
         self.G_train, self.G_test, self.y_train, self.y_test = train_test_split(graphs, classes, test_size=0.1)
 
     def train(self):
@@ -34,31 +34,24 @@ class Pegasos():
             sigma_loss = np.dot(alphas * ys, ks)
             
             if(self.y_train[i_t] / (self.lamda * t) * sigma_loss < 1):
-                alpha[i_t] += 1
-                kernel_cache[i_t] = [1, t]
-
+                if (t==1):
+                    alpha[i_t] += 1
+                    kernel_cache[i_t] = [1, t]
                 # optimize dictionary(Whether to add or not)
-                if (t>100):
+                if (t>2):
                     coh_max = 0
-                    coh_index = 0
                     for j in support_indices:
                         if(j == i_t):
                             continue
-
-                        if(t - kernel_cache[j][1] < 100):
-                            continue
-
-                        if(alpha[j] > 1):
-                            continue
-
+                    
                         coh = kernel_cache[j][0]
                         if(coh > coh_max):
                             coh_max = coh
-                            coh_index = j    
 
-                    if(coh_max > self.delta_c):
-                        alpha[coh_index] = 0
-                
+                    if(coh_max < self.delta_c):
+                        alpha[i_t] += 1
+                        kernel_cache[i_t] = [1, t]
+            # --------------------------------------------------------------------------------- #
             # projection
             support_indices = np.where(np.abs(alpha) > 0)[0]
             myKernel = gkf.GraphkernelFunc(2, kernelParam=1)
@@ -67,16 +60,29 @@ class Pegasos():
             ys = self.y_train[support_indices]
             ks = kernel_cache[support_indices, 0]
             phi = np.dot(alpha[support_indices] * ys, ks)
-            yt= self.y_train[i_t]
-            e = 1.0 - yt * phi
+            yt = self.y_train[i_t]
+            e = yt - phi 
+
+            # Tikhonov 正則化パラメータ (epsilon) を定義
+            # データとカーネルに依存するが、1e-6 や 1e-8 が一般的
+            epsilon = 1e-8
+
+            # Gram行列の対角成分に epsilon を加えることで正則化
+            # G_reg = G_n + epsilon * I を作成
+            regularized_gram_mat = gram_mat + epsilon * np.identity(gram_mat.shape[0])
 
             # direction vector
-            z = np.linalg.solve(gram_mat, ks)
-            # norm of direction vector           
-            denom = ks @ z                              
+            # 正則化された Gram行列を用いて z を計算
+            # (G_n + epsilon*I) * z = k を解く
+            z = np.linalg.solve(regularized_gram_mat, ks)
+
+            # norm of direction vector (G_nノルムを計算)
+            # k^T * z で正規化されたノルムを計算
+            denom = ks @ z                            
 
             step = self.relax * (e / denom)
-            alpha[support_indices] += step * (z * yt * ys) 
+            alpha[support_indices] += (step * z) / ys 
+            # --------------------------------------------------------------------------------- #
     
         return alpha
     
