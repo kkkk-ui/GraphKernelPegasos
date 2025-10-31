@@ -19,7 +19,6 @@ class Pegasos():
         # iterate
         for t in range(1,self.iter+1):
             eta_t = 1.0 / t 
-            # alpha = alpha * (1.0 - eta_t * self.lamda)
 
             i_t = np.random.randint(len(self.G_train))
             sigma_loss = 0
