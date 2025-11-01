@@ -41,9 +41,9 @@ time_nc_prune = [15.7494, 12.2922, 14.0270, 33.4471, 73.4886, 87.7436, 98.4539, 
 acc_nc_prune  = [0.9282, 0.9112, 0.9376, 0.9376, 0.7902, 0.6352, 0.6106, 0.6295]
 base_nc_prune = [31, 27, 36, 92, 231, 265, 271, 260]
 
-time_proj = [21.3536, 13.9772, 11.6198, 72.8096, 68.9656, 65.0394, 45.8056, 68.0279]
-acc_proj  = [0.6446, 0.6333, 0.6560, 0.9622, 0.9244, 0.9244, 0.9622, 0.9471]
-base_proj = [28, 12, 10, 99, 116, 110, 89, 94]
+time_proj = [315.9307, 109.3227, 2076.8985, 2905.0784, 3229.0533, 2815.9781, 2776.0530, 2877.6462]
+acc_proj  = [0.8809073724007561, 0.8657844990548205, 0.9886578449905482, 0.9659735349716446, 0.9149338374291115, 0.9848771266540642, 0.8733459357277883, 0.8998109640831758]
+base_proj = [57, 14, 297, 327, 340, 304, 311, 302]
 
 
 # ==== プロット ====
@@ -53,7 +53,7 @@ fig, axs = plt.subplots(3, 1, figsize=(10, 12))
 axs[0].errorbar(lamdas, time_mean, yerr=time_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
 axs[0].plot(lamdas, time_no_prune, '--', marker='s', label='No Pruning')
 axs[0].plot(lamdas, time_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-# axs[0].plot(lamdas, time_proj, '-', marker='o', label='Sparse Dict Pruning')
+axs[0].plot(lamdas, time_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
 axs[0].set_xscale("log")
 axs[0].set_ylabel("Time [s]")
 axs[0].set_title("Training Time")
@@ -64,7 +64,7 @@ axs[0].grid(True)
 axs[1].errorbar(lamdas, acc_mean, yerr=acc_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
 axs[1].plot(lamdas, acc_no_prune, '--', marker='s', label='No Pruning')
 axs[1].plot(lamdas, acc_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-# axs[1].plot(lamdas, acc_proj, '-', marker='o', label='Sparse Dict Pruning')
+axs[1].plot(lamdas, acc_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
 axs[1].set_xscale("log")
 axs[1].set_ylabel("Accuracy")
 axs[1].set_title("Accuracy Comparison")
@@ -76,7 +76,7 @@ axs[1].set_ylim(0.5, 1.0)
 axs[2].errorbar(lamdas, base_mean, yerr=base_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
 axs[2].plot(lamdas, base_no_prune, '--', marker='s', label='No Pruning')
 axs[2].plot(lamdas, base_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-# axs[2].plot(lamdas, base_proj, '-', marker='o', label='Sparse Dict Pruning')
+axs[2].plot(lamdas, base_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
 axs[2].set_xscale("log")
 axs[2].set_ylabel("Support Vectors")
 axs[2].set_xlabel("Lambda")
