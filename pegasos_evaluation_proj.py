@@ -95,7 +95,7 @@ class Pegasos():
         for i in range(len(self.G_test)):
             y = 0
             
-            support_indices = np.where(alpha > 0)[0]
+            support_indices = np.where(np.abs(alpha) > 0)[0]
             if support_indices.shape[0] > 0:
                 ks = gkf.GraphkernelFunc.k_vec_wl(self.G_test[i], np.array(self.G_train)[support_indices], 2)
             alphas = alpha[support_indices]
