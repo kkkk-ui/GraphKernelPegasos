@@ -3,26 +3,25 @@ import matplotlib.pyplot as plt
 
 # ==== 各回のデータ ====
 times = np.array([
-    [11.4044, 20.6439, 14.1883, 46.6571, 113.9741, 68.4284, 79.7303, 95.9029],
-    [10.4991, 19.2867, 6.5233, 65.6547, 56.1565, 77.3743, 73.1427, 61.8679],
-    [8.9294, 11.5734, 8.0590, 52.1838, 77.4194, 63.5191, 66.9935, 66.9307],
-    [21.1267, 18.0364, 8.1289, 36.4570, 77.1973, 76.4760, 77.4647, 83.0424]
+    [9.8444, 7.6917, 12.3169, 44.3889, 70.1796, 52.8072, 72.4535, 61.2284],
+    [11.7267, 10.1615, 7.8137, 52.8662, 79.2477, 77.995, 72.6661, 106.7571],
+    [8.1115, 6.8002, 7.6522, 53.0229, 99.5668, 74.9785, 89.4791, 87.9774],
+    [14.1913, 13.8512, 11.0844, 46.4148, 81.3375, 101.8621, 79.3229, 66.9801]
 ])
 
 accs = np.array([
-    [0.7750, 0.9338, 0.9376, 0.9773, 0.8866, 0.9830, 0.9735, 0.9263],
-    [0.9641, 0.6257, 0.9206, 0.9679, 0.8677, 0.9943, 0.9603, 0.9168],
-    [0.9943, 0.9225, 0.9849, 0.9149, 0.9509, 0.9149, 0.9074, 1.0000],
-    [0.7240, 0.8204, 0.8072, 0.9943, 0.8847, 0.9055, 0.9263, 0.9792]
+    [0.9282, 0.9811, 0.8960, 0.9490, 0.9452, 0.9433, 0.9546, 0.9225],
+    [0.8526, 0.9471, 0.9471, 0.9754, 0.9754, 0.8658, 0.9868, 0.9622],
+    [0.8563, 0.9149, 0.9792, 0.9792, 0.9168, 0.9641, 0.9471, 0.9527],
+    [0.9187, 0.9282, 0.9282, 0.9735, 0.9244, 0.9282, 0.9206, 0.9301]
 ])
 
 bases = np.array([
-    [13, 5, 4, 86, 108, 106, 108, 101],
-    [9, 28, 5, 104, 98, 124, 116, 107],
-    [3, 14, 6, 96, 102, 104, 101, 122],
-    [37, 24, 5, 93, 116, 123, 134, 124]
+    [14, 5, 5, 84, 110, 96, 104, 104],
+    [4, 3, 6, 90, 115, 109, 114, 130],
+    [3, 3, 6, 94, 121, 104, 118, 110],
+    [5, 4, 4, 99, 118, 126, 116, 110]
 ])
-
 
 # ==== 統計量 ====
 time_mean, time_std = times.mean(axis=0), times.std(axis=0)
@@ -31,10 +30,9 @@ base_mean, base_std = bases.mean(axis=0), bases.std(axis=0)
 
 lamdas = [1e-5, 1e-4, 1e-3, 1e-2, 0.1, 1, 10, 100]
 
-
 # ==== 比較データ ====
 time_no_prune = [9.4188, 19.0890, 43.0868, 80.8836, 201.6332, 239.7608, 258.5186, 256.3522]
-acc_no_prune = [0.9981, 0.9981, 0.9943, 0.9338, 0.7656, 0.6446, 0.6087, 0.6276]
+acc_no_prune  = [0.9981, 0.9981, 0.9943, 0.9338, 0.7656, 0.6446, 0.6087, 0.6276]
 base_no_prune = [18, 28, 68, 171, 400, 478, 472, 472]
 
 time_nc_prune = [15.7494, 12.2922, 14.0270, 33.4471, 73.4886, 87.7436, 98.4539, 87.0964]
@@ -45,44 +43,49 @@ time_proj = [315.9307, 109.3227, 2076.8985, 2905.0784, 3229.0533, 2815.9781, 277
 acc_proj  = [0.8809073724007561, 0.8657844990548205, 0.9886578449905482, 0.9659735349716446, 0.9149338374291115, 0.9848771266540642, 0.8733459357277883, 0.8998109640831758]
 base_proj = [57, 14, 297, 327, 340, 304, 311, 302]
 
-
-# ==== プロット ====
-fig, axs = plt.subplots(3, 1, figsize=(10, 12))
-
-# ==== 1. 処理時間 ====
-axs[0].errorbar(lamdas, time_mean, yerr=time_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
-axs[0].plot(lamdas, time_no_prune, '--', marker='s', label='No Pruning')
-axs[0].plot(lamdas, time_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-axs[0].plot(lamdas, time_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
-axs[0].set_xscale("log")
-axs[0].set_ylabel("Time [s]")
-axs[0].set_title("Training Time")
-axs[0].legend()
-axs[0].grid(True)
-
-# ==== 2. 精度 ====
-axs[1].errorbar(lamdas, acc_mean, yerr=acc_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
-axs[1].plot(lamdas, acc_no_prune, '--', marker='s', label='No Pruning')
-axs[1].plot(lamdas, acc_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-axs[1].plot(lamdas, acc_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
-axs[1].set_xscale("log")
-axs[1].set_ylabel("Accuracy")
-axs[1].set_title("Accuracy Comparison")
-axs[1].legend()
-axs[1].grid(True)
-axs[1].set_ylim(0.5, 1.0)
-
-# ==== 3. 基底数 ====
-axs[2].errorbar(lamdas, base_mean, yerr=base_std, fmt='-o', capsize=5, color='r', label='Sparse Dict Pruning')
-axs[2].plot(lamdas, base_no_prune, '--', marker='s', label='No Pruning')
-axs[2].plot(lamdas, base_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
-axs[2].plot(lamdas, base_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
-axs[2].set_xscale("log")
-axs[2].set_ylabel("Support Vectors")
-axs[2].set_xlabel("Lambda")
-axs[2].set_title("Number of Basis (Support Vectors)")
-axs[2].legend()
-axs[2].grid(True)
-
+# ========== 1) Training Time ==========
+plt.figure(figsize=(6, 4))
+plt.errorbar(lamdas, time_mean, yerr=time_std, fmt='-o', capsize=5, label='Sparse Dict Pruning')
+plt.plot(lamdas, time_no_prune, '--', marker='s', label='Pegasos')
+plt.plot(lamdas, time_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
+# plt.plot(lamdas, time_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
+plt.xscale("log")
+plt.ylabel("Time [s]")
+plt.title("Training Time")
+plt.legend()
+plt.grid(True)
 plt.tight_layout()
+plt.savefig("training_time.png", dpi=600)
+plt.show()
+
+# ========== 2) Accuracy ==========
+plt.figure(figsize=(6, 4))
+plt.errorbar(lamdas, acc_mean, yerr=acc_std, fmt='-o', capsize=5, label='Sparse Dict Pruning')
+plt.plot(lamdas, acc_no_prune, '--', marker='s', label='Pegasos')
+plt.plot(lamdas, acc_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
+# plt.plot(lamdas, acc_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
+plt.xscale("log")
+plt.ylabel("Accuracy")
+plt.title("Accuracy Comparison")
+plt.legend()
+plt.grid(True)
+plt.ylim(0.5, 1.0)
+plt.tight_layout()
+plt.savefig("accuracy.png", dpi=600)
+plt.show()
+
+# ========== 3) Number of Basis ==========
+plt.figure(figsize=(6, 4))
+plt.errorbar(lamdas, base_mean, yerr=base_std, fmt='-o', capsize=5, label='Sparse Dict Pruning')
+plt.plot(lamdas, base_no_prune, '--', marker='s', label='Pegasos')
+plt.plot(lamdas, base_nc_prune, '-.', marker='^', label='Sparse Dict Growth')
+# plt.plot(lamdas, base_proj, '-', marker='o', label='Sparse Dict Pruning(iter=5000)')
+plt.xscale("log")
+plt.ylabel("Support Vectors")
+plt.xlabel("Lambda")
+plt.title("Number of Basis (Support Vectors)")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("basis_support_vectors.png", dpi=600)
 plt.show()

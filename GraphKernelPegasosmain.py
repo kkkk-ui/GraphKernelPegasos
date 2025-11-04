@@ -16,7 +16,7 @@ myData.makeData(dataType=int(input("data type =>")))
 # Learning and evaluation.
 print("lamda,acc")
 for lamda in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10, 100]:
-    Pegasos = pg.Pegasos(myData.graphs, myData.classes, 5000, lamda)
+    Pegasos = pg.Pegasos(myData.graphs, myData.classes, 500, lamda)
 
     start = time.time()
     

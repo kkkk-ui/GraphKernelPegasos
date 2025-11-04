@@ -51,7 +51,8 @@ class Pegasos():
                             coh_max = coh
 
                     if(coh_max < self.delta_c):
-                        alpha[i_t] += eta_t / self.lamda
+                        # alpha[i_t] += eta_t / self.lamda
+                        alpha[i_t] += 1
                         kernel_cache[i_t] = [1, t]
             # --------------------------------------------------------------------------------- #
             # projection
