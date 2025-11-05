@@ -13,7 +13,7 @@ myData.makeData(dataType=int(input("data type =>")))
 #-------------------
 # Learning and evaluation.
 print("t,acc")
-for t in [100, 300, 500, 1000, 2000, 3000, 4000, 5000]:
+for t in [100, 300, 500, 1000, 2000, 3000, 4000, 5000, 10000, 20000]:
     Pegasos = pg.Pegasos(myData.graphs, myData.classes, t, 1e-2)
 
     start = time.time()
