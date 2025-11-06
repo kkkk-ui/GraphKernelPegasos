@@ -1,6 +1,7 @@
 import numpy as np
 import GraphKernelFunc as gkf
 from sklearn.model_selection import train_test_split
+import csv
 
 class Pegasos():
     def __init__(self, graphs, classes, iter, lamda):
@@ -58,7 +59,7 @@ class Pegasos():
             # projection
             support_indices = np.where(np.abs(alpha) > 0)[0]
             myKernel = gkf.GraphkernelFunc(2, kernelParam=1)
-            gram_mat = myKernel.createMatrix(np.array(self.G_train)[support_indices], 2)
+            # gram_mat = myKernel.createMatrix(np.array(self.G_train)[support_indices], 2)
 
             ys = self.y_train[support_indices]
             ks = kernel_cache[support_indices, 0]
@@ -66,6 +67,7 @@ class Pegasos():
             yt = self.y_train[i_t]
             e = yt - phi 
 
+            """
             # Tikhonov 正則化パラメータ (epsilon) を定義
             # データとカーネルに依存するが、1e-6 や 1e-8 が一般的
             epsilon = 1e-8
@@ -81,11 +83,18 @@ class Pegasos():
 
             # norm of direction vector (G_nノルムを計算)
             # k^T * z で正規化されたノルムを計算
-            denom = ks @ z                            
+            denom = ks @ z
+            """                            
 
+            denom = ks @ ks
             step = self.relax * (e / denom)
-            alpha[support_indices] += (step * z) / ys 
+            # alpha[support_indices] += (step * z) / ys 
+            alpha[support_indices] += (step * ks) / ys 
             # --------------------------------------------------------------------------------- #
+            # αのログ
+            with open('output.csv', 'a', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(alpha[support_indices])
     
         return alpha
     
