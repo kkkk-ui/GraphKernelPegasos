@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import numpy as np
-import pegasos_evaluation as pg
+import pegasos_evaluation_proj as pg
 import data
 import time
 import cProfile
-from pegasos_cython import train
+# from pegasos_cython import train
 
 #-------------------
 # Make data
@@ -38,7 +38,7 @@ for lamda in [1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1.0, 10, 100]:
     
     acc = Pegasos.accuracy(alpha)
     print(lamda,",",acc)
-    print("基底数", len(np.where(alpha > 0)[0]))
+    print("基底数", len(np.where(np.abs(alpha) > 0)[0]))
 
 # iter = int(input("iter = "))
 # lamda = float(input("lamda ="))

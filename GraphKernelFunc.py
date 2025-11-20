@@ -44,7 +44,7 @@ class GraphkernelFunc():
     # Weisfeiler-Lehman部分木カーネル
     def k_WLsubtree(self,graphs,i):
         # Weisfeiler-Lehmanカーネルのインスタンス化
-        wl_kernel = WeisfeilerLehman(n_iter=i)
+        wl_kernel = WeisfeilerLehman(n_iter=i, normalize=True)
         # カーネルの計算
         kernel_matrix = wl_kernel.fit_transform(graphs)
         return kernel_matrix
